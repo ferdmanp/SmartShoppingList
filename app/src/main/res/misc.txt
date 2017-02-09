@@ -1,0 +1,2 @@
+https://guides.codepath.com/android/DBFlow-Guide#gradle-configuration
+https://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite
