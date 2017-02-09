@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SmartShoppingList</string>
+    <string name="action_new">New</string>
+    <string name="title_new_header_dialog">Enter name</string>
+    <string name="btn_ok">Ok</string>
+    <string name="btn_cancel">Cancel</string>
+</resources>
