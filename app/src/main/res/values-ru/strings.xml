@@ -6,4 +6,5 @@
     <string name="title_new_header_dialog">Имя списка</string>
     <string name="action_delete_all">Delete all</string>
     <string name="delete_all_confirmation">Удалить ВСЕ списки?</string>
+    <string name="action_show_catalogs">Справочники</string>
 </resources>

@@ -14,4 +14,10 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom|withText" />
 
+    <item android:id="@+id/action_show_catalogs"
+        android:title="@string/action_show_catalogs"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom|withText" />
+
 </menu>
