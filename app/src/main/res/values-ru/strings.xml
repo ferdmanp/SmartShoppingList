@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SmartShoppingList</string>
+    <string name="btn_cancel">Отмена</string>
+    <string name="btn_ok">Ок</string>
+    <string name="title_new_header_dialog">Имя списка</string>
+    <string name="action_delete_all">Delete all</string>
+    <string name="delete_all_confirmation">Удалить ВСЕ списки?</string>
+</resources>

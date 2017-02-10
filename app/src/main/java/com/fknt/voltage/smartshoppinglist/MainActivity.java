@@ -15,6 +15,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,7 +67,12 @@ public class MainActivity extends AppCompatActivity {
         if(id == R.id.action_new) {
             //openFile(FILENAME);
             CreateNewItem();
-            Refresh();
+            return true;
+        }
+
+        if(id==R.id.action_delete_all){
+            //DeleteAllItems();
+            DeleteAllItemsWithConfirm();
             return true;
         }
 
@@ -75,12 +81,31 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void DeleteAllItemsWithConfirm()
+    {
+        ConfirmDialog dlg= new ConfirmDialog(getContext(), getString(R.string.delete_all_confirmation), new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                DeleteAllItems();
+                return true;
+            }
+        });
+
+        dlg.Show();
+    }
+
+    private void DeleteAllItems() {
+        SQLite.delete(ListHeader.class).execute();
+        Refresh();
+    }
+
     private void CreateNewItem(String newHeaderName) {
         ListHeader item= new ListHeader();
         item.title=newHeaderName;
         item.dateCreate= new Date();
         item.TotalSum=0.0;
         item.save();
+        item=null;
     }
 
     private void CreateNewItem()
@@ -98,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                         String newHeaderName=input.getText().toString();
                         CreateNewItem(newHeaderName);
                         dialog.dismiss();
+                        Refresh();
                     }
                 });
 

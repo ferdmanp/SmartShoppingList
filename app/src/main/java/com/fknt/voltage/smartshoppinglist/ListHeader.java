@@ -47,7 +47,7 @@ public class ListHeader extends BaseModel {
     }
 
     @Column
-    @PrimaryKey
+    @PrimaryKey(autoincrement = true)
     int id;
 
     @Column
