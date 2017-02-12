@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SmartShoppingList</string>
+    <string name="app_name">Умный список</string>
     <string name="btn_cancel">Отмена</string>
-    <string name="btn_ok">Ок</string>
     <string name="title_new_header_dialog">Имя списка</string>
-    <string name="action_delete_all">Delete all</string>
-    <string name="delete_all_confirmation">Удалить ВСЕ списки?</string>
+    <string name="action_delete_all">Удалить ВСЕ</string>
+    <string name="delete_all_confirmation">Удалить ВСЕ элементы?</string>
     <string name="action_show_catalogs">Справочники</string>
+    <string name="action_show_groups">Группы</string>
+    <string name="action_show_goods">Товары</string>
+    <string name="action_new">Добавить</string>
+    <string name="action_show_about">Контакты</string>
+    <string name="action_show_settings">Настройки</string>
+    <string name="title_activity_groups_list">Группы товаров</string>
+    <string name="action_settings">Настройки</string>
+    <string name="title_new_group_dialog">Новая группа</string>
 </resources>

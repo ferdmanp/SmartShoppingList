@@ -5,4 +5,5 @@
     <dimen name="text_size_big">34sp</dimen>
     <dimen name="text_size_mid">20sp</dimen>
     <dimen name="size_zero_dp">0dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

@@ -6,6 +6,8 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.util.Date;
+
 /**
  * Created by voltage on 09.02.2017. Project SmartShoppingList
  */
@@ -45,6 +47,11 @@ public class GoodsItem extends BaseModel {
     @Column
     double price;
 
+    @Column
+    Date lastBuyDate;
+
+
+
     public int getId() {
         return id;
     }
@@ -83,5 +90,13 @@ public class GoodsItem extends BaseModel {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Date getLastBuyDate() {
+        return lastBuyDate;
+    }
+
+    public void setLastBuyDate(Date lastBuyDate) {
+        this.lastBuyDate = lastBuyDate;
     }
 }

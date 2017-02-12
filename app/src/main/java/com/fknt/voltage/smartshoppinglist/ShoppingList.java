@@ -18,6 +18,7 @@ public class ShoppingList extends BaseModel {
     }
 
     public ShoppingList(ListHeader title, GoodsItem good, double quantity, double realPrice, double cost) {
+        super();
         this.title = title;
         this.good = good;
         this.quantity = quantity;

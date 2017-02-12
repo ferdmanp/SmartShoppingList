@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SmartShoppingList</string>
+    <string name="app_name">Розумний список</string>
     <string name="btn_cancel">Відміна</string>
-    <string name="btn_ok">Ок</string>
     <string name="title_new_header_dialog">Введіть ім\'я</string>
-    <string name="action_delete_all">Delete all</string>
-    <string name="delete_all_confirmation">Видалити ВСІ списки ?</string>
+    <string name="action_delete_all">Видалити ВСЕ</string>
+    <string name="delete_all_confirmation">Видалити ВСІ елементи ?</string>
     <string name="action_show_catalogs">Довідники</string>
+    <string name="action_show_groups">Групи</string>
+    <string name="action_show_goods">Товари</string>
+    <string name="action_new">Додати</string>
+    <string name="action_show_about">Контакти</string>
+    <string name="action_show_settings">Налаштування</string>
+    <string name="title_activity_groups_list">Групи товарів</string>
+    <string name="action_settings">Налаштування</string>
+    <string name="title_new_group_dialog">Нова група</string>
 </resources>

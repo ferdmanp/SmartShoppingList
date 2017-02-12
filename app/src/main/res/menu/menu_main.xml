@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
 
+    <group android:id="@+id/mnu_grp1">
     <item android:id="@+id/action_new"
         android:title="@string/action_new"
         android:icon="@android:drawable/ic_menu_add"
@@ -11,13 +12,31 @@
     <item android:id="@+id/action_delete_all"
         android:title="@string/action_delete_all"
         android:icon="@android:drawable/ic_menu_delete"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
         app:showAsAction="ifRoom|withText" />
+    </group>
 
-    <item android:id="@+id/action_show_catalogs"
-        android:title="@string/action_show_catalogs"
-        android:icon="@android:drawable/ic_menu_agenda"
-        android:orderInCategory="100"
-        app:showAsAction="ifRoom|withText" />
+    <group android:id="@+id/mnu_grp2">
+    <item android:id="@+id/action_show_groups"
+        android:title="@string/action_show_groups"
+        android:orderInCategory="200"
+        app:showAsAction="collapseActionView" />
+    <item android:id="@+id/action_show_goods"
+        android:title="@string/action_show_goods"
+        android:orderInCategory="201"
+        app:showAsAction="collapseActionView" />
+    </group>
+    <group android:id="@+id/mnu_grp3">
+        <item android:id="@+id/action_show_settings"
+            android:title="@string/action_show_settings"
+            android:icon="@android:drawable/ic_menu_preferences"
+            android:orderInCategory="300"
+            app:showAsAction="withText|collapseActionView" />
+        <item android:id="@+id/action_show_about"
+            android:title="@string/action_show_about"
+            android:icon="@android:drawable/ic_menu_help"
+            android:orderInCategory="301"
+            app:showAsAction="withText|collapseActionView" />
+    </group>
 
 </menu>

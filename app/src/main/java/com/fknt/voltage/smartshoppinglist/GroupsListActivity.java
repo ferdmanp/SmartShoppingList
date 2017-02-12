@@ -1,63 +1,58 @@
 package com.fknt.voltage.smartshoppinglist;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.fknt.voltage.smartshoppinglist.Adapters.ListHeadersAdapter;
+import com.fknt.voltage.smartshoppinglist.Adapters.GroupItemAdapter;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
-public class MainActivity extends AppCompatActivity {
+public class GroupsListActivity extends AppCompatActivity {
 
-
-    ListHeadersAdapter adapter;
-    ListView lvHeaders;
-
-    private MainActivity getContext()
-    {
-        return MainActivity.this;
-    }
+    List<GoodsGroup> groupsList;
+    ListView lvGroups;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_groups_list);
+        setTitle(R.string.title_activity_groups_list);
 
-        adapter= new ListHeadersAdapter(GetHeaders(),getContext());
-        lvHeaders= (ListView) findViewById(R.id.lvHeaders);
-        lvHeaders.setAdapter(adapter);
+        groupsList=SelectAllGroups();
+        GroupItemAdapter adapter= new GroupItemAdapter(getContext(),groupsList);
+
+        lvGroups=(ListView)findViewById(R.id.lv_goods_groups);
+        lvGroups.setAdapter(adapter);
 
 
 
     }
 
-    void Refresh()
-    {
-        adapter= new ListHeadersAdapter(GetHeaders(),getContext());
-        lvHeaders= (ListView) findViewById(R.id.lvHeaders);
-        lvHeaders.setAdapter(adapter);
-    }
-
-    private List<ListHeader> GetHeaders()
-    {
-        return SQLite.select()
-                .from(ListHeader.class)
-                .queryList();
+    private Activity getContext() {
+        return GroupsListActivity.this;
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_groups_list, menu);
         return true;
     }
 
@@ -67,14 +62,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
             case R.id.action_new:
-                CreateNewItem();
+                CreateNewGroup();
                 break;
             case R.id.action_delete_all:
                 DeleteAllItemsWithConfirm();
-                break;
-            case R.id.action_show_groups:
-                Intent intent=new Intent(getContext(),GroupsListActivity.class);
-                startActivity(intent);
                 break;
         }
 
@@ -95,23 +86,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void DeleteAllItems() {
-        SQLite.delete(ListHeader.class).execute();
+        SQLite.delete(GoodsGroup.class).execute();
         Refresh();
     }
 
-    private void CreateNewItem(String newHeaderName) {
-        ListHeader item= new ListHeader();
-        item.title=newHeaderName;
-        item.dateCreate= new Date();
-        item.TotalSum=0.0;
-        item.save();
-        item=null;
-    }
-
-    private void CreateNewItem()
-    {
+    private void CreateNewGroup() {
         AlertDialog.Builder builder= new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.title_new_header_dialog);
+        builder.setTitle(R.string.title_new_group_dialog);
         final EditText input= new EditText(getContext());
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
@@ -120,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String newHeaderName=input.getText().toString();
-                        CreateNewItem(newHeaderName);
+                        String newGroupName=input.getText().toString();
+                        CreateNewGroup(newGroupName);
                         dialog.dismiss();
                         Refresh();
                     }
@@ -136,5 +117,38 @@ public class MainActivity extends AppCompatActivity {
 
         builder.show();
     }
+
+    private void Refresh() {
+        groupsList=SelectAllGroups();
+        GroupItemAdapter adapter= new GroupItemAdapter(getContext(),groupsList);
+        lvGroups=(ListView)findViewById(R.id.lv_goods_groups);
+        lvGroups.setAdapter(adapter);
+    }
+
+    private void CreateNewGroup(String newGroupName) {
+        GoodsGroup group= new GoodsGroup();
+        group.setGroupName(newGroupName);
+        group.save();
+        group=null;
+    }
+
+    private List<GoodsGroup> SelectAllGroups(){
+        return SQLite
+                .select()
+                .from(GoodsGroup.class)
+                .queryList();
+    }
+
+    private String GetGroupById(int id)
+    {
+        return SQLite
+                .select()
+                .from(GoodsGroup.class)
+                .where(GoodsGroup_Table.id.eq(id))
+                .queryList()
+                .get(0)
+                .getGroupName();
+    }
+
 
 }
