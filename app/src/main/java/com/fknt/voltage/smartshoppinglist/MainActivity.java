@@ -76,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent=new Intent(getContext(),GroupsListActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.action_show_goods:
+                Intent intent2=new Intent(getContext(),GoodsCatalogActivityEx.class);
+                startActivity(intent2);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
