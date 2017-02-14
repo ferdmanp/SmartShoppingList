@@ -1,6 +1,7 @@
 package com.fknt.voltage.smartshoppinglist.Adapters;
 
 import android.content.Context;
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
     private int groupLayoutId;
     private Context ctx;
 
-    private HashMap<GoodsGroup,List<GoodsItem>> itemsTree;
+    private ArrayMap<GoodsGroup,List<GoodsItem>> itemsTree;
 
     public ExpandableCatalogAdapter(List<GoodsGroup> groups, int itemLayoutId, int groupLayoutId, Context ctx) {
         this.groups = groups;
@@ -38,7 +39,7 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
 
     private void initTree()
     {
-        itemsTree= new HashMap<>();
+        itemsTree= new ArrayMap<>();
         for(GoodsGroup group: groups)
         {
             itemsTree.put(group,group.GetChildItems());
