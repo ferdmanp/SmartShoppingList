@@ -104,8 +104,14 @@ public class GoodsItem extends BaseModel {
 
     @Override
     public String toString() {
-        return name+"("+String.valueOf(id)+")" ;
+        return name;
     }
+
+
+//    public void deleteItem()
+//    {
+//
+//    }
 
     public static List<GoodsItem> SelectAll()
     {

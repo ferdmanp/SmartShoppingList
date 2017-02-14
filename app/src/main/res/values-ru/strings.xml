@@ -14,4 +14,6 @@
     <string name="title_activity_groups_list">Группы товаров</string>
     <string name="action_settings">Настройки</string>
     <string name="title_new_group_dialog">Новая группа</string>
+    <string name="button_text_cancel">Отмена</string>
+    <string name="button_text_save">Сохранить</string>
 </resources>

@@ -14,4 +14,6 @@
     <string name="title_activity_groups_list">Групи товарів</string>
     <string name="action_settings">Налаштування</string>
     <string name="title_new_group_dialog">Нова група</string>
+    <string name="button_text_cancel">Відміна</string>
+    <string name="button_text_save">Зберегти</string>
 </resources>

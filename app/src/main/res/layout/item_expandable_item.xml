@@ -1,25 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:weightSum="5"
     >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/checkbox_off_background"
+        android:id="@+id/ivCheckBox"
+        android:layout_weight="1"
+        android:layout_gravity="center" />
+
     <TextView
         android:text="Item"
         android:id="@+id/tv_item_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
+        android:layout_weight="3"
         android:textSize="@dimen/text_size_mid"
-        />
-    <CheckBox
-        android:id="@+id/cb_checked"
-        android:layout_width="0dp"
+        android:layout_gravity="center" />
+
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="@dimen/text_size_mid"
-        android:textAlignment="center"
-        android:checked="true"
-        android:gravity="center" />
+        android:id="@+id/ivEdit"
+        android:src="@android:drawable/ic_menu_edit"
+        android:layout_weight="0.5"
+        android:layout_gravity="center"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_delete"
+        android:id="@+id/ivDelete"
+        android:layout_weight="0.5"
+        android:layout_gravity="center"/>
+
 
 </LinearLayout>

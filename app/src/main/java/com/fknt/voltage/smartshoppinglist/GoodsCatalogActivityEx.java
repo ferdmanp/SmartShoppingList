@@ -6,10 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
 
+import com.fknt.voltage.smartshoppinglist.Adapters.ExpandableCatalogAdapter;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
 
     private ExpandableListAdapter adapter;
     private ExpandableListView listView;
+    private ExpandableCatalogAdapter adapter2;
 
     private static final String GOODS_GROUP_KEY  = "GOODS_GROUP";
     private static final String GOODS_ITEM_KEY  = "GOODS_ITEM";
@@ -42,53 +46,22 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
 
     }
 
-    private void RefreshData() {
-        Map<String,String> groupsMap;
-        Map<String,String> goodsMap;
-        ArrayList<Map<String,String>> groupData= new ArrayList<>();
-        ArrayList<Map<String,String>> goodsDataItem= new ArrayList<>();
-        ArrayList<ArrayList<Map<String,String>>> childData= new ArrayList<>();
 
-        groups=getGroups();
 
-        for(GoodsGroup group:groups)
-        {
-            groupsMap= new HashMap<>();
-            groupsMap.put(GOODS_GROUP_KEY,group.toString());
-            groupData.add(groupsMap);
-        }
+    private void RefreshData(){
 
-        String groupFrom[]=new String[]{GOODS_GROUP_KEY};
-        int groupTo[]=new int[]{android.R.id.text1};
-
-        for(GoodsGroup group:groups)
-        {
-
-            goodsDataItem= new ArrayList<>();
-            List<GoodsItem> items=getGoodsByGroupId(group.getId());
-
-            for (GoodsItem item:items)
-            {
-                goodsMap= new HashMap<>();
-                goodsMap.put(GOODS_ITEM_KEY,item.toString());
-                goodsDataItem.add(goodsMap);
-            }
-            childData.add(goodsDataItem);
-        }
-
-        String childFrom[]= new String[] {GOODS_ITEM_KEY};
-        int childTo[]= new int[]{android.R.id.text1};
-
-        adapter=new SimpleExpandableListAdapter(
-                getContext(),
-                groupData,
-                android.R.layout.simple_expandable_list_item_1, groupFrom,
-                groupTo, childData, android.R.layout.simple_list_item_1,
-                childFrom, childTo
-        );
+        adapter2=new ExpandableCatalogAdapter(GoodsGroup.SelectAll()
+                ,R.layout.item_expandable_item
+                ,R.layout.item_expandable_header
+                ,getContext());
 
         listView=(ExpandableListView) findViewById(R.id.elv_goods_list);
-        listView.setAdapter(adapter);
+        listView.setIndicatorBounds(0,20);
+        listView.setAdapter(adapter2);
+
+
+
+
     }
 
     @Override

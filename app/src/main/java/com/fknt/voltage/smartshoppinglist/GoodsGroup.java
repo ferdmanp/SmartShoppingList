@@ -49,7 +49,7 @@ public class GoodsGroup extends BaseModel {
 
     @Override
     public String toString() {
-        return groupName+"("+String.valueOf(id)+")";
+        return groupName;
     }
 
     public List<GoodsItem> GetChildItems()

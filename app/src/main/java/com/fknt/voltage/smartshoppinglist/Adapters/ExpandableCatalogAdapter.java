@@ -2,17 +2,18 @@ package com.fknt.voltage.smartshoppinglist.Adapters;
 
 import android.content.Context;
 import android.util.ArrayMap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fknt.voltage.smartshoppinglist.GoodsGroup;
 import com.fknt.voltage.smartshoppinglist.GoodsItem;
+import com.fknt.voltage.smartshoppinglist.R;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -25,15 +26,16 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
     private List<GoodsGroup> groups;
     private int itemLayoutId;
     private int groupLayoutId;
-    private Context ctx;
+    private Context context;
 
     private ArrayMap<GoodsGroup,List<GoodsItem>> itemsTree;
 
-    public ExpandableCatalogAdapter(List<GoodsGroup> groups, int itemLayoutId, int groupLayoutId, Context ctx) {
+    public ExpandableCatalogAdapter(List<GoodsGroup> groups, int itemLayoutId, int groupLayoutId, Context context) {
         this.groups = groups;
         this.itemLayoutId = itemLayoutId;
         this.groupLayoutId = groupLayoutId;
-        this.ctx = ctx;
+        this.context = context;
+        initTree();
 
     }
 
@@ -53,6 +55,7 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int i) {
+//        Log.d("MYDEBUG",String.valueOf(i));
         return itemsTree
                 .get(groups.get(i))
                 .size();
@@ -99,8 +102,12 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
 
         if(view==null)
         {
-            //TODO Описать лайаут
-            view= LayoutInflater.from(this.ctx).inflate(groupLayoutId,null);
+            //DONE Описать лайаут
+            view= LayoutInflater.from(this.context).inflate(groupLayoutId,null);
+
+            TextView tvGroupHeader=(TextView) view.findViewById(R.id.tv_group_header_name);
+
+            tvGroupHeader.setText(this.getGroup(groupPosition).toString());
 
         }
 
@@ -113,8 +120,14 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
 
         if(view==null)
         {
-            //TODO Описать лайаут
-            view= LayoutInflater.from(this.ctx).inflate(itemLayoutId,null);
+            //DONE Описать лайаут
+            view= LayoutInflater.from(this.context).inflate(itemLayoutId,null);
+            TextView tvItemName=(TextView) view.findViewById(R.id.tv_item_name);
+            ImageView ivDelete=(ImageView) view.findViewById(R.id.ivDelete);
+
+            tvItemName.setText(this.getChild(groupPosition,childPosition).toString());
+            
+
 
         }
 
