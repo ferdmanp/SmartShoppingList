@@ -19,7 +19,8 @@
         <activity android:name=".ListItemsActivity" />
         <activity android:name=".GroupsListActivity" />
         <activity android:name=".GoodsItemActivity" />
-        <activity android:name=".GoodsCatalogActivityEx"></activity>
+        <activity android:name=".GoodsCatalogActivityEx" />
+        <activity android:name=".FormNewGoodActivity"></activity>
     </application>
 
 </manifest>

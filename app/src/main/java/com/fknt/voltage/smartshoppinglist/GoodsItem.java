@@ -4,9 +4,11 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by voltage on 09.02.2017. Project SmartShoppingList
@@ -31,7 +33,7 @@ public class GoodsItem extends BaseModel {
     }
 
     @Column
-    @PrimaryKey
+    @PrimaryKey(autoincrement = true)
     int id;
 
     @Column
@@ -98,5 +100,27 @@ public class GoodsItem extends BaseModel {
 
     public void setLastBuyDate(Date lastBuyDate) {
         this.lastBuyDate = lastBuyDate;
+    }
+
+    @Override
+    public String toString() {
+        return name+"("+String.valueOf(id)+")" ;
+    }
+
+    public static List<GoodsItem> SelectAll()
+    {
+        return SQLite
+                .select()
+                .from(GoodsItem.class)
+                .queryList();
+    }
+
+    public static  List<GoodsItem> SelectListByGroupId(int groupId)
+    {
+        return  SQLite
+                .select()
+                .from(GoodsItem.class)
+                .where(GoodsItem_Table.goodsGroup_id.eq(groupId))
+                .queryList();
     }
 }

@@ -36,18 +36,25 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_catalog_ex);
 
-        Map<String,GoodsGroup> groupsMap;
-        Map<String,GoodsItem> goodsMap;
-        ArrayList<Map<String,GoodsGroup>> groupData= new ArrayList<>();
-        ArrayList<Map<String,GoodsItem>> goodsDataItem= new ArrayList<>();
-        ArrayList<ArrayList<Map<String,GoodsItem>>> childData= new ArrayList<>();
+
+        RefreshData();
+
+
+    }
+
+    private void RefreshData() {
+        Map<String,String> groupsMap;
+        Map<String,String> goodsMap;
+        ArrayList<Map<String,String>> groupData= new ArrayList<>();
+        ArrayList<Map<String,String>> goodsDataItem= new ArrayList<>();
+        ArrayList<ArrayList<Map<String,String>>> childData= new ArrayList<>();
 
         groups=getGroups();
 
         for(GoodsGroup group:groups)
         {
             groupsMap= new HashMap<>();
-            groupsMap.put(GOODS_GROUP_KEY,group);
+            groupsMap.put(GOODS_GROUP_KEY,group.toString());
             groupData.add(groupsMap);
         }
 
@@ -63,7 +70,7 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
             for (GoodsItem item:items)
             {
                 goodsMap= new HashMap<>();
-                goodsMap.put(GOODS_ITEM_KEY,item);
+                goodsMap.put(GOODS_ITEM_KEY,item.toString());
                 goodsDataItem.add(goodsMap);
             }
             childData.add(goodsDataItem);
@@ -82,12 +89,16 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
 
         listView=(ExpandableListView) findViewById(R.id.elv_goods_list);
         listView.setAdapter(adapter);
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        RefreshData();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_items_list, menu);
         return true;
     }
 
@@ -111,13 +122,10 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
     }
 
     private void CreateNewItem() {
-
+        Intent intent= new Intent(getContext(),FormNewGoodActivity.class);
+        startActivity(intent);
     }
 
-    private void CreateNewItem(String itemName, GoodsGroup group)
-    {
-
-    }
 
     private Context getContext(){return GoodsCatalogActivityEx.this;}
 
