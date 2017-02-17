@@ -1,6 +1,7 @@
 package com.fknt.voltage.smartshoppinglist;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,8 +19,10 @@ public class FormNewGoodActivity extends AppCompatActivity
 
 {
 
+    private enum ShowMode {NEW,EDIT};
 
-    GoodsGroup selectedGroup;
+    GoodsItem formItem;
+    ShowMode currentActivityMode;
 
     EditText etName;
     EditText etUnits;
@@ -34,6 +37,11 @@ public class FormNewGoodActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_new_good);
 
+        currentActivityMode=ShowMode.NEW;
+
+
+
+
         etName=(EditText) findViewById(R.id.etName);
         etUnits=(EditText) findViewById(R.id.etMeasureUnit);
         etBasicPrice=(EditText) findViewById(R.id.etBasicPrice);
@@ -41,21 +49,23 @@ public class FormNewGoodActivity extends AppCompatActivity
         btnSave=(Button) findViewById(R.id.btnSave);
         btnCancel=(Button) findViewById(R.id.btnCancel);
 
-
-
-
-//        final GroupsSpinnerAdapter adapter= new GroupsSpinnerAdapter(getContext(),android.R.layout.simple_spinner_item,groupsList.toArray(new GoodsGroup[groupsList.size()]));
-//        spGroups.setAdapter(adapter);
-//        spGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                selectedGroup=adapter.getItem(i);
-//            }
-//        });
-
         ArrayAdapter adapter= new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,GoodsGroup.SelectAll());
         spGroups.setAdapter(adapter);
 
+
+        Intent intent=getIntent();
+        Bundle bundle=intent.getExtras();
+
+        if(bundle!=null && bundle.containsKey("EDIT_ITEM_KEY"))
+        {
+            int itemId=bundle.getInt("EDIT_ITEM");
+            formItem=GoodsItem.SelectById(itemId);
+            currentActivityMode=ShowMode.EDIT;
+            etName.setText(formItem.getName());
+            etUnits.setText(formItem.getUnit_name());
+            etBasicPrice.setText(String.valueOf(formItem.getPrice()));
+            spGroups.setSelection(adapter.getPosition(formItem.getGoodsGroup()));
+        }
 
 
         btnSave.setOnClickListener(new View.OnClickListener() {

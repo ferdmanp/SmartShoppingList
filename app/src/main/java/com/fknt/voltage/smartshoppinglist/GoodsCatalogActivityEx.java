@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 //http://developer.alexanderklimov.ru/android/views/expandablelistview.php
 //https://developer.android.com/reference/android/widget/SimpleExpandableListAdapter.html
@@ -44,7 +45,60 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
         RefreshData();
 
 
+
+
+        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                ImageView ivDelete=(ImageView)v.findViewById(R.id.ivDelete);
+                ImageView ivEdit=(ImageView)v.findViewById(R.id.ivEdit);
+                final GoodsItem item=(GoodsItem) v.getTag();
+
+                ivDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final GoodsItem itemToDelete=item;
+
+                        if(itemToDelete!=null)
+                        {
+                            ConfirmDialog dlg=new ConfirmDialog(getContext(), getString(R.string.delete_dialog_title), new Callable<Object>() {
+                                @Override
+                                public Object call() throws Exception {
+                                    DeleteItem(itemToDelete);
+
+                                    return true;
+                                }
+                            });
+                            dlg.Show();
+                            RefreshData();
+                        }
+                    }
+                });
+
+                ivEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //FIXME Вот тут не работает
+                        final GoodsItem itemToEdit=item;
+
+                        Intent intent=new Intent(getContext(),FormNewGoodActivity.class);
+                        intent.putExtra("EDIT_ITEM_ID",itemToEdit.getId());
+                        startActivity(intent);
+                    }
+                });
+                return false;
+            }
+        });
+
+
     }
+
+    private void DeleteItem(GoodsItem item)
+    {
+        item.delete();
+    }
+
+
 
 
 
@@ -58,6 +112,7 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
         listView=(ExpandableListView) findViewById(R.id.elv_goods_list);
         listView.setIndicatorBounds(0,20);
         listView.setAdapter(adapter2);
+
 
 
 

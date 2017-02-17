@@ -126,7 +126,7 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
             ImageView ivDelete=(ImageView) view.findViewById(R.id.ivDelete);
 
             tvItemName.setText(this.getChild(groupPosition,childPosition).toString());
-            
+            ivDelete.setTag(this.getChild(groupPosition,childPosition));
 
 
         }

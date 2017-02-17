@@ -7,6 +7,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -15,9 +16,8 @@ import java.util.List;
  */
 
 @Table(database = MyDatabase.class)
-public class GoodsItem extends BaseModel {
-
-
+public class GoodsItem extends BaseModel
+                        implements Serializable {
 
     public GoodsItem() {
 
@@ -128,5 +128,14 @@ public class GoodsItem extends BaseModel {
                 .from(GoodsItem.class)
                 .where(GoodsItem_Table.goodsGroup_id.eq(groupId))
                 .queryList();
+    }
+
+    public static GoodsItem SelectById(int id)
+    {
+        return SQLite
+                .select()
+                .from(GoodsItem.class)
+                .where(GoodsItem_Table.id.eq(id))
+                .querySingle();
     }
 }

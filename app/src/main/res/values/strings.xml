@@ -17,4 +17,6 @@
     <string name="title_new_group_dialog">New group</string>
     <string name="button_text_save">Save</string>
     <string name="button_text_cancel">Cancel</string>
+    <string name="delete_dialog_title">Delete</string>
+    <string name="delete_dialog_text">Delete item ?</string>
 </resources>
