@@ -28,6 +28,43 @@ import java.util.concurrent.Callable;
 
 public class GoodsCatalogActivityEx extends AppCompatActivity {
 
+    private enum ClickListenerMode {EDIT, DELETE};
+
+    private class GoodsItemClickListener implements View.OnClickListener
+    {
+
+        private GoodsItem item;
+        ClickListenerMode clickListenerMode;
+
+        public GoodsItemClickListener(GoodsItem item, ClickListenerMode clickListenerMode) {
+            this.item = item;
+            this.clickListenerMode = clickListenerMode;
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (clickListenerMode) {
+                case DELETE:
+                    ConfirmDialog dlg=new ConfirmDialog(getContext(), getString(R.string.delete_dialog_title), new Callable<Object>() {
+                        @Override
+                        public Object call() throws Exception {
+                            DeleteItem(item);
+                            return true;
+                        }
+                    });
+                    dlg.Show();
+                    RefreshData();
+                    break;
+                case EDIT:
+                    Intent intent=new Intent(getContext(),FormNewGoodActivity.class);
+                    intent.putExtra("EDIT_ITEM_ID",item.getId());
+                    startActivity(intent);
+                    RefreshData();
+                    break;
+            }
+        }
+    }
+
     private List<GoodsGroup> groups;
     private List<GoodsItem> goods;
 
@@ -53,46 +90,15 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
                 ImageView ivDelete=(ImageView)v.findViewById(R.id.ivDelete);
                 ImageView ivEdit=(ImageView)v.findViewById(R.id.ivEdit);
 
-                final GoodsItem item=(GoodsItem) v.getTag();
+                GoodsItem item=(GoodsItem) v.getTag();
 
-                ivDelete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final GoodsItem itemToDelete=item;
+                ivDelete.setOnClickListener(new GoodsItemClickListener(item,ClickListenerMode.DELETE));
+                ivEdit.setOnClickListener(new GoodsItemClickListener(item,ClickListenerMode.EDIT));
 
-                        if(itemToDelete!=null)
-                        {
-                            ConfirmDialog dlg=new ConfirmDialog(getContext(), getString(R.string.delete_dialog_title), new Callable<Object>() {
-                                @Override
-                                public Object call() throws Exception {
-                                    DeleteItem(itemToDelete);
-
-                                    return true;
-                                }
-                            });
-                            dlg.Show();
-                            RefreshData();
-                        }
-                    }
-                });
-
-                ivEdit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //FIXME Вот тут не работает
-                        final GoodsItem itemToEdit=item;
-
-                        Intent intent=new Intent(getContext(),FormNewGoodActivity.class);
-                        intent.putExtra("EDIT_ITEM_ID",itemToEdit.getId());
-
-                        startActivity(intent);
+                //RefreshData();
 
 
-
-                    }
-                });
-
-                return false;
+                return true;
             }
         });
 
@@ -109,6 +115,8 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
 
 
     private void RefreshData(){
+        if(adapter2!=null)
+            adapter2=null;
 
         adapter2=new ExpandableCatalogAdapter(GoodsGroup.SelectAll()
                 ,R.layout.item_expandable_item
