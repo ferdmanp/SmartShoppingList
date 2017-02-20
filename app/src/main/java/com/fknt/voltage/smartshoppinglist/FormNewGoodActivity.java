@@ -56,9 +56,9 @@ public class FormNewGoodActivity extends AppCompatActivity
         Intent intent=getIntent();
         Bundle bundle=intent.getExtras();
 
-        if(bundle!=null && bundle.containsKey("EDIT_ITEM_KEY"))
+        if(bundle!=null && bundle.containsKey("EDIT_ITEM_ID"))
         {
-            int itemId=bundle.getInt("EDIT_ITEM");
+            int itemId=bundle.getInt("EDIT_ITEM_ID");
             formItem=GoodsItem.SelectById(itemId);
             currentActivityMode=ShowMode.EDIT;
             etName.setText(formItem.getName());

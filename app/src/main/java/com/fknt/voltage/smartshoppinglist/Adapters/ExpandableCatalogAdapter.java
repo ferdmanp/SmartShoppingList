@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +40,26 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
         initTree();
 
     }
+
+    private View.OnClickListener OnEditClickListener;
+
+    public View.OnClickListener getOnEditClickListener() {
+        return OnEditClickListener;
+    }
+
+    public void setOnEditClickListener(View.OnClickListener onEditClickListener) {
+        OnEditClickListener = onEditClickListener;
+    }
+
+    public View.OnClickListener getOnDeleteClickListener() {
+        return OnDeleteClickListener;
+    }
+
+    public void setOnDeleteClickListener(View.OnClickListener onDeleteClickListener) {
+        OnDeleteClickListener = onDeleteClickListener;
+    }
+
+    private View.OnClickListener OnDeleteClickListener;
 
     private void initTree()
     {
@@ -123,10 +145,17 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
             //DONE Описать лайаут
             view= LayoutInflater.from(this.context).inflate(itemLayoutId,null);
             TextView tvItemName=(TextView) view.findViewById(R.id.tv_item_name);
+//            ImageButton ivDelete=(ImageButton) view.findViewById(R.id.ivDelete);
+//            ImageButton ivEdit=(ImageButton) view.findViewById(R.id.ivEdit);
             ImageView ivDelete=(ImageView) view.findViewById(R.id.ivDelete);
+            ImageView ivEdit=(ImageView) view.findViewById(R.id.ivEdit);
 
             tvItemName.setText(this.getChild(groupPosition,childPosition).toString());
-            ivDelete.setTag(this.getChild(groupPosition,childPosition));
+//            ivDelete.setOnClickListener(this.OnDeleteClickListener);
+//            ivEdit.setOnClickListener(this.OnEditClickListener);
+//            ivDelete.setTag(this.getChild(groupPosition,childPosition));
+//            ivEdit.setTag(this.getChild(groupPosition,childPosition));
+            view.setTag(this.getChild(groupPosition,childPosition));
 
 
         }

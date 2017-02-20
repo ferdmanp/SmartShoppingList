@@ -1,5 +1,6 @@
 package com.fknt.voltage.smartshoppinglist;
 
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
 
@@ -45,13 +47,12 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
         RefreshData();
 
 
-
-
         listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 ImageView ivDelete=(ImageView)v.findViewById(R.id.ivDelete);
                 ImageView ivEdit=(ImageView)v.findViewById(R.id.ivEdit);
+
                 final GoodsItem item=(GoodsItem) v.getTag();
 
                 ivDelete.setOnClickListener(new View.OnClickListener() {
@@ -83,9 +84,14 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
 
                         Intent intent=new Intent(getContext(),FormNewGoodActivity.class);
                         intent.putExtra("EDIT_ITEM_ID",itemToEdit.getId());
+
                         startActivity(intent);
+
+
+
                     }
                 });
+
                 return false;
             }
         });
@@ -122,6 +128,12 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        RefreshData();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         RefreshData();
     }
 
@@ -173,6 +185,8 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
                 .where(GoodsItem_Table.goodsGroup_id.eq(groupId))
                 .queryList();
     }
+
+
 
 
 
