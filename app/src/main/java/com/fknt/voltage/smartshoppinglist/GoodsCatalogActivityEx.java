@@ -1,8 +1,8 @@
 package com.fknt.voltage.smartshoppinglist;
 
-import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,17 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.SimpleExpandableListAdapter;
 
 import com.fknt.voltage.smartshoppinglist.Adapters.ExpandableCatalogAdapter;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 //http://developer.alexanderklimov.ru/android/views/expandablelistview.php
@@ -69,7 +64,7 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
     private List<GoodsItem> goods;
 
     private ExpandableListAdapter adapter;
-    private ExpandableListView listView;
+    private ExpandableListView exListView;
     private ExpandableCatalogAdapter adapter2;
 
     private static final String GOODS_GROUP_KEY  = "GOODS_GROUP";
@@ -84,7 +79,7 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
         RefreshData();
 
 
-        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        exListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 ImageView ivDelete=(ImageView)v.findViewById(R.id.ivDelete);
@@ -115,17 +110,21 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
 
 
     private void RefreshData(){
-        if(adapter2!=null)
-            adapter2=null;
+//        if(adapter2!=null)
+//            adapter2=null;
 
         adapter2=new ExpandableCatalogAdapter(GoodsGroup.SelectAll()
                 ,R.layout.item_expandable_item
                 ,R.layout.item_expandable_header
                 ,getContext());
 
-        listView=(ExpandableListView) findViewById(R.id.elv_goods_list);
-        listView.setIndicatorBounds(0,20);
-        listView.setAdapter(adapter2);
+        exListView =(ExpandableListView) findViewById(R.id.elv_goods_list);
+
+//        Configuration config=getContext().getResources().getConfiguration();
+//        exListView.setIndicatorBounds(config.screenWidthDp-50,config.screenWidthDp-20);
+        //exListView.setGroupIndicator();
+        exListView.setAdapter(adapter2);
+        exListView.invalidateViews();
 
 
 

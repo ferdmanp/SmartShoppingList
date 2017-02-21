@@ -127,10 +127,23 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
             //DONE Описать лайаут
             view= LayoutInflater.from(this.context).inflate(groupLayoutId,null);
 
-            TextView tvGroupHeader=(TextView) view.findViewById(R.id.tv_group_header_name);
+        }
 
-            tvGroupHeader.setText(this.getGroup(groupPosition).toString());
+        TextView tvGroupHeader=(TextView) view.findViewById(R.id.tv_group_header_name);
+        ImageView ivExpansionIndicator=(ImageView) view.findViewById(R.id.ivExpandIndicator);
 
+        tvGroupHeader.setText(this.getGroup(groupPosition).toString());
+        //ivExpansionIndicator.setImageResource(R.drawable.groups_selector);
+
+        if(isExpanded)
+        {
+            ivExpansionIndicator.setImageResource(R.drawable.ic_expand_less_black_24dp);
+            view.setBackgroundColor(view.getResources().getColor(android.R.color.holo_blue_bright) );
+        }
+        else
+        {
+            ivExpansionIndicator.setImageResource(R.drawable.ic_expand_more_black_24dp);
+            view.setBackgroundColor(view.getResources().getColor(android.R.color.holo_blue_dark) );
         }
 
         return view;
@@ -144,21 +157,23 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
         {
             //DONE Описать лайаут
             view= LayoutInflater.from(this.context).inflate(itemLayoutId,null);
-            TextView tvItemName=(TextView) view.findViewById(R.id.tv_item_name);
+
+
+        }
+
+        TextView tvItemName=(TextView) view.findViewById(R.id.tv_item_name);
 //            ImageButton ivDelete=(ImageButton) view.findViewById(R.id.ivDelete);
 //            ImageButton ivEdit=(ImageButton) view.findViewById(R.id.ivEdit);
-            ImageView ivDelete=(ImageView) view.findViewById(R.id.ivDelete);
-            ImageView ivEdit=(ImageView) view.findViewById(R.id.ivEdit);
+        ImageView ivDelete=(ImageView) view.findViewById(R.id.ivDelete);
+        ImageView ivEdit=(ImageView) view.findViewById(R.id.ivEdit);
 
-            tvItemName.setText(this.getChild(groupPosition,childPosition).toString());
+        tvItemName.setText(this.getChild(groupPosition,childPosition).toString());
 //            ivDelete.setOnClickListener(this.OnDeleteClickListener);
 //            ivEdit.setOnClickListener(this.OnEditClickListener);
 //            ivDelete.setTag(this.getChild(groupPosition,childPosition));
 //            ivEdit.setTag(this.getChild(groupPosition,childPosition));
-            view.setTag(this.getChild(groupPosition,childPosition));
+        view.setTag(this.getChild(groupPosition,childPosition));
 
-
-        }
 
         return view;
     }
