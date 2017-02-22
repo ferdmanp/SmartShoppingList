@@ -3,6 +3,8 @@ package com.fknt.voltage.smartshoppinglist;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.DataSetObservable;
+import android.database.DataSetObserver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,14 +18,16 @@ import com.fknt.voltage.smartshoppinglist.Adapters.ExpandableCatalogAdapter;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 //http://developer.alexanderklimov.ru/android/views/expandablelistview.php
 //https://developer.android.com/reference/android/widget/SimpleExpandableListAdapter.html
 
-public class GoodsCatalogActivityEx extends AppCompatActivity {
+public class GoodsCatalogActivityEx extends AppCompatActivity
+{
 
-    private enum ClickListenerMode {EDIT, DELETE};
+    private enum ClickListenerMode {EDIT, DELETE}
 
     private class GoodsItemClickListener implements View.OnClickListener
     {
@@ -67,8 +71,6 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
     private ExpandableListView exListView;
     private ExpandableCatalogAdapter adapter2;
 
-    private static final String GOODS_GROUP_KEY  = "GOODS_GROUP";
-    private static final String GOODS_ITEM_KEY  = "GOODS_ITEM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
         RefreshData();
 
 
+
         exListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
@@ -87,10 +90,10 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
 
                 GoodsItem item=(GoodsItem) v.getTag();
 
-                ivDelete.setOnClickListener(new GoodsItemClickListener(item,ClickListenerMode.DELETE));
+                //ivDelete.setOnClickListener(new GoodsItemClickListener(item,ClickListenerMode.DELETE));
                 ivEdit.setOnClickListener(new GoodsItemClickListener(item,ClickListenerMode.EDIT));
 
-                //RefreshData();
+                RefreshData();
 
 
                 return true;
@@ -103,6 +106,7 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
     private void DeleteItem(GoodsItem item)
     {
         item.delete();
+        RefreshData();
     }
 
 
@@ -110,13 +114,14 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
 
 
     private void RefreshData(){
-//        if(adapter2!=null)
-//            adapter2=null;
+
 
         adapter2=new ExpandableCatalogAdapter(GoodsGroup.SelectAll()
                 ,R.layout.item_expandable_item
                 ,R.layout.item_expandable_header
                 ,getContext());
+
+        //adapter2.registerDataSetObserver(this);
 
         exListView =(ExpandableListView) findViewById(R.id.elv_goods_list);
 
@@ -125,11 +130,6 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
         //exListView.setGroupIndicator();
         exListView.setAdapter(adapter2);
         exListView.invalidateViews();
-
-
-
-
-
     }
 
     @Override
@@ -165,7 +165,22 @@ public class GoodsCatalogActivityEx extends AppCompatActivity {
     }
 
     private void DeleteAllItemsWithConfirm() {
+        ConfirmDialog dlg= new ConfirmDialog(getContext()
+                , getResources().getString(R.string.delete_all_confirmation)
+                , new Callable<Object>() {
+            @Override
+            public Boolean call() throws Exception {
+                deleteAllGoods();
+                return true;
+            }
+        });
+        dlg.Show();
 
+    }
+
+    private void deleteAllGoods() {
+        GoodsItem.DeleteAll();
+        RefreshData();
     }
 
     private void CreateNewItem() {

@@ -1,6 +1,7 @@
 package com.fknt.voltage.smartshoppinglist.Adapters;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import com.fknt.voltage.smartshoppinglist.GoodsGroup;
 import com.fknt.voltage.smartshoppinglist.GoodsItem;
 import com.fknt.voltage.smartshoppinglist.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +26,8 @@ import java.util.List;
  */
 //https://habrahabr.ru/post/147546/
 
-public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
+public class ExpandableCatalogAdapter extends BaseExpandableListAdapter
+{
 
     private List<GoodsGroup> groups;
     private int itemLayoutId;
@@ -132,7 +136,9 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
         TextView tvGroupHeader=(TextView) view.findViewById(R.id.tv_group_header_name);
         ImageView ivExpansionIndicator=(ImageView) view.findViewById(R.id.ivExpandIndicator);
 
-        tvGroupHeader.setText(this.getGroup(groupPosition).toString());
+        tvGroupHeader.setText(this.getGroup(groupPosition).toString()
+        +"("+this.getChildrenCount(groupPosition)+")"
+        );
         //ivExpansionIndicator.setImageResource(R.drawable.groups_selector);
 
         if(isExpanded)
@@ -152,6 +158,7 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View view=convertView;
+        final GoodsItem item=(GoodsItem) this.getChild(groupPosition,childPosition);
 
         if(view==null)
         {
@@ -168,8 +175,15 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
         ImageView ivEdit=(ImageView) view.findViewById(R.id.ivEdit);
 
         tvItemName.setText(this.getChild(groupPosition,childPosition).toString());
-//            ivDelete.setOnClickListener(this.OnDeleteClickListener);
-//            ivEdit.setOnClickListener(this.OnEditClickListener);
+            ivDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    item.delete();
+                    notifyDataSetChanged();
+
+                }
+            });
+            ivEdit.setOnClickListener(this.OnEditClickListener);
 //            ivDelete.setTag(this.getChild(groupPosition,childPosition));
 //            ivEdit.setTag(this.getChild(groupPosition,childPosition));
         view.setTag(this.getChild(groupPosition,childPosition));
@@ -177,4 +191,26 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter {
 
         return view;
     }
+
+
+    /////////////-----EXPERIMENTAL----///
+
+    private ArrayList<DataSetObserver> observes= new ArrayList<>();
+
+    @Override
+    public void registerDataSetObserver(DataSetObserver observer) {
+        //super.registerDataSetObserver(observer);
+        observes.add(observer);
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        //super.notifyDataSetChanged();
+        for(DataSetObserver observer:observes)
+        {
+            observer.onChanged();
+        }
+    }
+
+    //---
 }

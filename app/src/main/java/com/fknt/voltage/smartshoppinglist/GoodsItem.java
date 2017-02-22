@@ -1,10 +1,13 @@
 package com.fknt.voltage.smartshoppinglist;
 
+import android.support.annotation.Nullable;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.sql.language.property.IntProperty;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.io.Serializable;
@@ -137,5 +140,21 @@ public class GoodsItem extends BaseModel
                 .from(GoodsItem.class)
                 .where(GoodsItem_Table.id.eq(id))
                 .querySingle();
+    }
+
+    public static void DeleteAll()
+    {
+        SQLite
+                .delete()
+                .from(GoodsItem.class)
+                .execute();
+    }
+
+    public static void DeleteAll(int groupId)
+    {
+        SQLite.delete()
+                .from(GoodsItem.class)
+                .where(GoodsItem_Table.goodsGroup_id.eq(groupId))
+                .execute();
     }
 }
