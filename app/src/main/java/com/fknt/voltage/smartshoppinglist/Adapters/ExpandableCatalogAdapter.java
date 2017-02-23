@@ -19,7 +19,10 @@ import com.fknt.voltage.smartshoppinglist.GoodsItem;
 import com.fknt.voltage.smartshoppinglist.R;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 
 /**
  * Created by SD on 14.02.2017.
@@ -72,6 +75,32 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter
         {
             itemsTree.put(group,group.GetChildItems());
         }
+    }
+
+    //TODO Организовать удаление єлемента из дерева
+    private boolean deleteFromTree(GoodsItem item)
+    {
+        boolean result = false;
+        GoodsGroup group=item.getGoodsGroup();
+        if(itemsTree.containsKey(group)) {
+           for(Iterator<Map.Entry<GoodsGroup,List<GoodsItem>>> iterator=itemsTree.entrySet().iterator();iterator.hasNext();)
+           {
+               Map.Entry<GoodsGroup,List<GoodsItem>> groupEntry=iterator.next();
+               if(groupEntry.getKey().getId()==group.getId())
+               {
+                   for(Iterator<GoodsItem> itemIterator=groupEntry.getValue().iterator();iterator.hasNext();)
+                   {
+                       GoodsItem mItem = itemIterator.next();
+                       if(mItem.getId()==item.getId()) mItem.delete();
+
+                   }
+               }
+           }
+
+
+        }
+        return  result;
+
     }
 
     @Override
@@ -178,9 +207,9 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter
             ivDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    deleteFromTree(item);
                     item.delete();
-                    notifyDataSetChanged();
-
+                    ExpandableCatalogAdapter.this.notifyDataSetInvalidated();
                 }
             });
             ivEdit.setOnClickListener(this.OnEditClickListener);
@@ -199,13 +228,13 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter
 
     @Override
     public void registerDataSetObserver(DataSetObserver observer) {
-        //super.registerDataSetObserver(observer);
+        super.registerDataSetObserver(observer);
         observes.add(observer);
     }
 
     @Override
     public void notifyDataSetChanged() {
-        //super.notifyDataSetChanged();
+        super.notifyDataSetChanged();
         for(DataSetObserver observer:observes)
         {
             observer.onChanged();

@@ -91,9 +91,11 @@ public class GoodsCatalogActivityEx extends AppCompatActivity
                 GoodsItem item=(GoodsItem) v.getTag();
 
                 //ivDelete.setOnClickListener(new GoodsItemClickListener(item,ClickListenerMode.DELETE));
-                ivEdit.setOnClickListener(new GoodsItemClickListener(item,ClickListenerMode.EDIT));
+                //ivEdit.setOnClickListener(new GoodsItemClickListener(item,ClickListenerMode.EDIT));
 
-                RefreshData();
+                //RefreshData();
+                parent.getAdapter().notifyAll();
+
 
 
                 return true;
