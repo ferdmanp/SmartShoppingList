@@ -49,29 +49,31 @@ public class FormNewGoodActivity extends AppCompatActivity
         btnSave=(Button) findViewById(R.id.btnSave);
         btnCancel=(Button) findViewById(R.id.btnCancel);
 
-        ArrayAdapter adapter= new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,GoodsGroup.SelectAll());
+        //ArrayAdapter adapter= new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,GoodsGroup.SelectAll());
+        ArrayAdapter adapter= new ArrayAdapter(getContext(),R.layout.spinner_row_groups,GoodsGroup.SelectAll());
         spGroups.setAdapter(adapter);
 
 
         Intent intent=getIntent();
         Bundle bundle=intent.getExtras();
 
-        if(bundle!=null && bundle.containsKey("EDIT_ITEM_ID"))
+        if(bundle!=null && bundle.containsKey("ITEM_ID"))
         {
-            int itemId=bundle.getInt("EDIT_ITEM_ID");
+            int itemId=bundle.getInt("ITEM_ID");
             formItem=GoodsItem.SelectById(itemId);
+            GoodsGroup itemGroup=formItem.getGoodsGroup();
             currentActivityMode=ShowMode.EDIT;
             etName.setText(formItem.getName());
             etUnits.setText(formItem.getUnit_name());
             etBasicPrice.setText(String.valueOf(formItem.getPrice()));
-            spGroups.setSelection(adapter.getPosition(formItem.getGoodsGroup()));
+            spGroups.setSelection(adapter.getPosition(itemGroup));
         }
 
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateNewItem();
+                CreateOrUpdate(formItem);
             }
         });
 
@@ -81,41 +83,34 @@ public class FormNewGoodActivity extends AppCompatActivity
                 finish();
             }
         });
+    }
 
+    private void CreateOrUpdate(GoodsItem item)
+    {
+        if(item==null)
+            item= new GoodsItem();
+            String name=etName.getText().toString();
+            String measure_unit=etUnits.getText().toString();
+            double basic_price=Double.valueOf(etBasicPrice.getText().toString());
+            GoodsGroup group=(GoodsGroup) spGroups.getSelectedItem();
 
+            item.setName(name);
+            item.setUnit_name(measure_unit);
+            item.setPrice(basic_price);
+            item.setGoodsGroup(group);
+            item.save();
+            item=null;
+            group=null;
 
-
-
+            finish();
 
     }
 
-    private void CreateNewItem() {
 
-        String name=etName.getText().toString();
-        String measure_unit=etUnits.getText().toString();
-        double basic_price=Double.valueOf(etBasicPrice.getText().toString());
-        GoodsGroup group=(GoodsGroup) spGroups.getSelectedItem();
-
-
-        GoodsItem goodsItem= new GoodsItem();
-        goodsItem.setName(name);
-        goodsItem.setUnit_name(measure_unit);
-        goodsItem.setPrice(basic_price);
-        goodsItem.setGoodsGroup(group);
-        goodsItem.save();
-        goodsItem=null;
-        group=null;
-
-        finish();
-    }
 
     private Activity getContext(){return  FormNewGoodActivity.this;}
 
-    private void Refresh()
-    {
-        ArrayAdapter adapter= new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,GoodsGroup.SelectAll());
-        spGroups.setAdapter(adapter);
-    }
+
 
 
 }

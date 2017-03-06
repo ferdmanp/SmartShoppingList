@@ -1,19 +1,20 @@
 package com.fknt.voltage.smartshoppinglist.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.DataSetObserver;
+import android.os.Bundle;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fknt.voltage.smartshoppinglist.ConfirmDialog;
+import com.fknt.voltage.smartshoppinglist.FormNewGoodActivity;
 import com.fknt.voltage.smartshoppinglist.GoodsGroup;
 import com.fknt.voltage.smartshoppinglist.GoodsItem;
 import com.fknt.voltage.smartshoppinglist.R;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.Callable;
 
 
 /**
@@ -32,6 +35,21 @@ import java.util.Map;
 public class ExpandableCatalogAdapter extends BaseExpandableListAdapter
 {
 
+    private class DeleteAction implements Callable<Object>
+    {
+        private GoodsItem item;
+
+        public DeleteAction(GoodsItem item) {
+            this.item = item;
+        }
+
+        @Override
+        public Object call() throws Exception {
+            deleteItem(item);
+            return null;
+        }
+    }
+
     private List<GoodsGroup> groups;
     private int itemLayoutId;
     private int groupLayoutId;
@@ -40,12 +58,49 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter
     private ArrayMap<GoodsGroup,List<GoodsItem>> itemsTree;
 
     public ExpandableCatalogAdapter(List<GoodsGroup> groups, int itemLayoutId, int groupLayoutId, Context context) {
+        //Log.d("DEBUG","Ctor");
         this.groups = groups;
         this.itemLayoutId = itemLayoutId;
         this.groupLayoutId = groupLayoutId;
         this.context = context;
         initTree();
+        OnDeleteClickListener= new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Log.d("DEBUG",v.getContext().toString());
+                GoodsItem item=(GoodsItem) v.getTag();
 
+                ConfirmDialog dlg= new ConfirmDialog(v.getContext(), "Delete element " + item,
+                        new DeleteAction(item)
+                        );
+                dlg.Show();
+
+
+            }
+        };
+
+    }
+
+    private void deleteItem(GoodsItem item)
+    {
+        if(item!=null)
+        {
+            deleteFromTree(item);
+            deleteFromDB(item);
+            reInitTree();
+            notifyDataSetChanged();
+        }
+    }
+
+    private void reInitTree() {
+        this.groups=GoodsGroup.SelectAll();
+        initTree();
+
+    }
+
+
+    private void deleteFromDB(GoodsItem item) {
+        item.delete();
     }
 
     private View.OnClickListener OnEditClickListener;
@@ -96,8 +151,6 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter
                    }
                }
            }
-
-
         }
         return  result;
 
@@ -198,28 +251,47 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter
         }
 
         TextView tvItemName=(TextView) view.findViewById(R.id.tv_item_name);
-//            ImageButton ivDelete=(ImageButton) view.findViewById(R.id.ivDelete);
-//            ImageButton ivEdit=(ImageButton) view.findViewById(R.id.ivEdit);
+
         ImageView ivDelete=(ImageView) view.findViewById(R.id.ivDelete);
         ImageView ivEdit=(ImageView) view.findViewById(R.id.ivEdit);
 
         tvItemName.setText(this.getChild(groupPosition,childPosition).toString());
-            ivDelete.setOnClickListener(new View.OnClickListener() {
+
+        ivDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    deleteFromTree(item);
-                    item.delete();
-                    ExpandableCatalogAdapter.this.notifyDataSetInvalidated();
+                    ConfirmDialog dlg= new ConfirmDialog(
+                            v.getContext(),"Delete "+item.getName()+"?",
+                            new DeleteAction(item)
+                    );
+
+                    dlg.Show();
+
+                   //deleteItem(item);
                 }
             });
-            ivEdit.setOnClickListener(this.OnEditClickListener);
-//            ivDelete.setTag(this.getChild(groupPosition,childPosition));
-//            ivEdit.setTag(this.getChild(groupPosition,childPosition));
+        ivEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int itemId=item.getId();
+                Intent intent=new Intent(v.getContext(), FormNewGoodActivity.class);
+//                Bundle params=new Bundle();
+//                params.putInt("ITEM_ID",itemId);
+//                intent.putExtra("params",params);
+                intent.putExtra("ITEM_ID",itemId);
+                v.getContext().startActivity(intent);
+            }
+        });
+
         view.setTag(this.getChild(groupPosition,childPosition));
 
 
         return view;
     }
+
+
+
+
 
 
     /////////////-----EXPERIMENTAL----///
