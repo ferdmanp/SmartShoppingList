@@ -16,4 +16,8 @@
     <string name="title_new_group_dialog">Нова група</string>
     <string name="button_text_cancel">Відміна</string>
     <string name="button_text_save">Зберегти</string>
+    <string name="action_new_group">Add new group</string>
+    <string name="title_goods_list">Довідник товарів</string>
+    <string name="delete_dialog_text">Видалити елемент ?</string>
+    <string name="delete_dialog_title">Видалити</string>
 </resources>

@@ -19,4 +19,6 @@
     <string name="button_text_cancel">Cancel</string>
     <string name="delete_dialog_title">Delete</string>
     <string name="delete_dialog_text">Delete item ?</string>
+    <string name="action_new_group">Add new group</string>
+    <string name="title_goods_list">Goods catalog</string>
 </resources>

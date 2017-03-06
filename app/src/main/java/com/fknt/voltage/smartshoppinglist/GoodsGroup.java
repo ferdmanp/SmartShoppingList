@@ -52,6 +52,18 @@ public class GoodsGroup extends BaseModel {
         return groupName;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj!=null) {
+            if (!(obj instanceof GoodsGroup)) return false;
+            GoodsGroup cmp=(GoodsGroup)obj;
+            return  cmp.getId()==this.getId();
+        }
+        else
+            return  false;
+
+    }
+
     public List<GoodsItem> GetChildItems()
     {
         return GoodsItem.SelectListByGroupId(this.getId());

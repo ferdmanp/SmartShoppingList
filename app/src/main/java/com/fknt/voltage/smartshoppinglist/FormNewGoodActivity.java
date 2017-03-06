@@ -19,7 +19,7 @@ public class FormNewGoodActivity extends AppCompatActivity
 
 {
 
-    private enum ShowMode {NEW,EDIT};
+    private enum ShowMode {NEW,EDIT}
 
     GoodsItem formItem;
     ShowMode currentActivityMode;
@@ -50,8 +50,8 @@ public class FormNewGoodActivity extends AppCompatActivity
         btnCancel=(Button) findViewById(R.id.btnCancel);
 
         //ArrayAdapter adapter= new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,GoodsGroup.SelectAll());
-        ArrayAdapter adapter= new ArrayAdapter(getContext(),R.layout.spinner_row_groups,GoodsGroup.SelectAll());
-        spGroups.setAdapter(adapter);
+        ArrayAdapter spinnerAdapter= new ArrayAdapter(getContext(),R.layout.spinner_row_groups,GoodsGroup.SelectAll());
+        spGroups.setAdapter(spinnerAdapter);
 
 
         Intent intent=getIntent();
@@ -62,11 +62,12 @@ public class FormNewGoodActivity extends AppCompatActivity
             int itemId=bundle.getInt("ITEM_ID");
             formItem=GoodsItem.SelectById(itemId);
             GoodsGroup itemGroup=formItem.getGoodsGroup();
+            int spinnerPosition=spinnerAdapter.getPosition(itemGroup);
             currentActivityMode=ShowMode.EDIT;
             etName.setText(formItem.getName());
             etUnits.setText(formItem.getUnit_name());
             etBasicPrice.setText(String.valueOf(formItem.getPrice()));
-            spGroups.setSelection(adapter.getPosition(itemGroup));
+            spGroups.setSelection(spinnerPosition);
         }
 
 
