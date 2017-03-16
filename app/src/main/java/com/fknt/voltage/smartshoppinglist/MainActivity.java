@@ -67,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
             case R.id.action_new:
-                CreateNewItem();
+                //CreateNewItem();
+                CreateNewShoppingList();
                 break;
             case R.id.action_delete_all:
                 DeleteAllItemsWithConfirm();
@@ -83,6 +84,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void CreateNewShoppingList() {
+        Intent intent= new Intent(getContext(),ShoppingListEditorActivity.class);
+        startActivity(intent);
     }
 
     private void DeleteAllItemsWithConfirm()

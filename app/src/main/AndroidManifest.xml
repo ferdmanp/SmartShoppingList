@@ -20,7 +20,8 @@
         <activity android:name=".GroupsListActivity" />
         <activity android:name=".GoodsItemActivity" />
         <activity android:name=".GoodsCatalogActivityEx" />
-        <activity android:name=".FormNewGoodActivity"></activity>
+        <activity android:name=".FormNewGoodActivity" />
+        <activity android:name=".ShoppingListEditorActivity"></activity>
     </application>
 
 </manifest>

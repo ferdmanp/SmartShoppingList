@@ -132,7 +132,7 @@ public class ExpandableCatalogAdapter extends BaseExpandableListAdapter
         }
     }
 
-    //TODO Организовать удаление єлемента из дерева
+    //DONE Организовать удаление єлемента из дерева
     private boolean deleteFromTree(GoodsItem item)
     {
         boolean result = false;
