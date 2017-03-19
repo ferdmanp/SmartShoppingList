@@ -142,6 +142,15 @@ public class GoodsItem extends BaseModel
                 .querySingle();
     }
 
+    public static List<GoodsItem> SelectByNamePattern(String pattern)
+    {
+        return SQLite
+                .select()
+                .from(GoodsItem.class)
+                .where(GoodsItem_Table.name.like(pattern))
+                .queryList();
+    }
+
     public static void DeleteAll()
     {
         SQLite
