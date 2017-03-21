@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
@@ -34,6 +36,13 @@ public class ShoppingListEditorActivity extends AppCompatActivity {
         actvSearchItem.setThreshold(2);
         actvSearchItem.setTextColor(Color.RED);
         actvSearchItem.setAdapter(adapter);
+
+        actvSearchItem.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                return false;
+            }
+        });
     }
 
     private Context getContext(){return ShoppingListEditorActivity.this;}
